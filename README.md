@@ -31,9 +31,11 @@ Most ML credit-risk projects are notebooks. This is a **config-driven CLI pipeli
 | Model | AUC-ROC | Avg Precision | Brier Score |
 |---|---|---|---|
 | Baseline (no weighting) | 0.6280 | 0.1305 | 0.0728 |
-| **Champion (class_weight=balanced)** | **0.7594** | **0.2492** | — |
+| **Champion (class_weight=balanced)** | **0.7594** | **0.2492** | 0.1653 |
 
 Dataset: [Home Credit Default Risk](https://www.kaggle.com/c/home-credit-default-risk) — 307,511 rows, 122 features, 8.1% default rate.
+
+> **Note on Brier score:** The champion model's higher Brier score (0.165 vs 0.073) is expected — `class_weight='balanced'` shifts the model's probability outputs toward the minority class, which is the intended behavior for recall-focused lending decisions. AUC-ROC and Average Precision are the metrics that matter here.
 
 ---
 
@@ -78,10 +80,13 @@ Every path, model parameter, and business rule lives in `configs/*.yaml`. The co
 After training, `shap.TreeExplainer` computes feature attributions on a 5,000-row sample from the test set. Results are exported as `feature_importance_shap.csv` — not model internals, but actual Shapley values for each prediction.
 
 ```
-EXT_SOURCE_3       ████████████████ 0.0312
-EXT_SOURCE_2       ██████████████   0.0268
-DAYS_BIRTH         ██████████       0.0198
-EXT_SOURCE_1       █████████        0.0187
+EXT_SOURCE_3       ████████████████████ 0.381  ← external credit bureau score
+EXT_SOURCE_2       ██████████████████   0.345  ← external credit bureau score
+EXT_SOURCE_1       ███████████          0.200  ← external credit bureau score
+AMT_GOODS_PRICE    ██████████           0.189  ← loan purpose amount
+AMT_CREDIT         █████████            0.168  ← total credit amount
+DAYS_EMPLOYED      ██████               0.121  ← employment length
+DAYS_BIRTH         ██████               0.114  ← applicant age
 ...
 ```
 
