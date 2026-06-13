@@ -501,7 +501,8 @@ st.markdown(
     "<div style='text-align:center;color:#94A3B8;font-size:0.85em;'>"
     "Built by <b>Oussama Skia</b> · "
     "<a href='https://github.com/skayy47/credit-risk-prediction' style='color:#1E40AF;'>GitHub</a> · "
-    "Home Credit Default Risk dataset · LightGBM + SHAP"
+    "<a href='https://www.kaggle.com/c/home-credit-default-risk' style='color:#1E40AF;'>Home Credit Data</a> · "
+    "LightGBM + SHAP"
     "</div>",
     unsafe_allow_html=True,
 )

@@ -3,12 +3,12 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![LightGBM](https://img.shields.io/badge/model-LightGBM-informational)](https://lightgbm.readthedocs.io/)
 [![SHAP](https://img.shields.io/badge/explainability-SHAP-green)](https://shap.readthedocs.io/)
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://credit-risk-skay.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://credit-risk-prediction-skay.streamlit.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > A production-grade ML pipeline that predicts probability of default (PD) on 307,511 real loan applications — with SHAP explainability, business scenario simulation, and Power BI–ready outputs.
 
-**[Live Demo →](https://credit-risk-skay.streamlit.app)**
+**[Live Demo →](https://credit-risk-prediction-skay.streamlit.app)**
 
 ---
 
