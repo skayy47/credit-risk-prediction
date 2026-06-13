@@ -1,0 +1,5 @@
+# Paths (relative to project root). Use from config loader only.
+raw_data: data/raw/application_train.csv
+reports_dir: data/outputs/reports
+predictions_dir: data/outputs/predictions
+models_dir: data/outputs/models

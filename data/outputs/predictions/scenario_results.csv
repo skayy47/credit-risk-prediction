@@ -1,0 +1,4 @@
+scenario_name,threshold,profit_if_good,loss_given_default,approval_rate,default_rate,expected_profit,expected_loss,net_value
+Base,0.2,0.2,1.0,0.294656,0.004072,18048.2,369.0,17679.2
+Conservative,0.1,0.2,1.0,0.101066,0.00222,6202.0,69.0,6133.0
+Aggressive,0.3,0.25,1.0,0.470234,0.007095,35894.0,1026.0,34868.0

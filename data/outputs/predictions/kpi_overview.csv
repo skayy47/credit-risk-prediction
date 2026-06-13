@@ -1,0 +1,2 @@
+run_id,created_at,n_rows,n_cols,default_rate,avg_missing_rate,pct_columns_missing_gt_40
+20260204_101240,2026-02-04T10:12:40+00:00,307511,122,0.080729,0.243959,40.1639

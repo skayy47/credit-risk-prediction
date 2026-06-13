@@ -1,0 +1,6 @@
+# Streamlit Cloud runtime dependencies
+# Model pipeline is NOT retrained at deploy time — app reads pre-generated CSVs
+streamlit>=1.30
+plotly>=5.18
+pandas>=2.0
+numpy>=1.24

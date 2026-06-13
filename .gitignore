@@ -1,0 +1,44 @@
+# ── raw data (large, not for version control) ─────────────────────────────────
+data/raw/
+data/outputs/predictions/predictions.csv
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# ── Virtual environments ───────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Testing / coverage ─────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+*.coverage
+
+# ── Large model artifacts ──────────────────────────────────────────────────────
+# joblib model files can be large — commit only if <50MB
+# data/outputs/models/*.joblib
+
+# ── IDE & OS ───────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ── Secrets ────────────────────────────────────────────────────────────────────
+.env
+.env.*
+*.secret

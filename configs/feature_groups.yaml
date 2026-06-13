@@ -1,0 +1,25 @@
+# Regex-based feature groups. First match wins (order matters).
+# Used for feature_group in missingness_by_feature and feature_summary.
+feature_groups:
+  - name: amount
+    pattern: "^AMT_"
+  - name: days
+    pattern: "^DAYS_"
+  - name: name
+    pattern: "^NAME_"
+  - name: code
+    pattern: "^CODE_"
+  - name: flag
+    pattern: "^FLAG_"
+  - name: count
+    pattern: "^CNT_"
+  - name: region
+    pattern: "^REG_"
+  - name: ext_source
+    pattern: "^EXT_SOURCE"
+  - name: bureau
+    pattern: "BUREAU"
+  - name: document
+    pattern: "DOCUMENT"
+  - name: other
+    pattern: ".*"

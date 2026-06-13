@@ -1,0 +1,180 @@
+{
+  "name": "SKAY Premium Banking Dark (Indigo/Lavender)",
+  "background": "#0B0A12",
+  "foreground": "#EAEAF0",
+  "tableAccent": "#6D5DF6",
+  "dataColors": [
+    "#A89BF2",
+    "#6D5DF6",
+    "#6EE7FF",
+    "#3DDC97",
+    "#FFB86B",
+    "#FF6B9A",
+    "#FF6B6B",
+    "#B8B5D6",
+    "#EAEAF0"
+  ],
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 14,
+      "color": "#EAEAF0"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 10,
+      "color": "#B8B5D6"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 26,
+      "color": "#EAEAF0"
+    }
+  },
+  "visualStyles": {
+    "page": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#0B0A12" } },
+            "transparency": 0
+          }
+        ]
+      }
+    },
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#141124" } },
+            "transparency": 8
+          }
+        ],
+        "border": [
+          {
+            "show": false
+          }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontFamily": "Segoe UI Semibold",
+            "fontSize": 12,
+            "fontColor": { "solid": { "color": "#EAEAF0" } }
+          }
+        ],
+        "legend": [
+          {
+            "show": true,
+            "titleColor": { "solid": { "color": "#B8B5D6" } },
+            "labelColor": { "solid": { "color": "#EAEAF0" } },
+            "fontFamily": "Segoe UI",
+            "fontSize": 9
+          }
+        ],
+        "labels": [
+          {
+            "fontFamily": "Segoe UI",
+            "fontSize": 10,
+            "color": { "solid": { "color": "#B8B5D6" } }
+          }
+        ],
+        "categoryAxis": [
+          {
+            "labelColor": { "solid": { "color": "#B8B5D6" } },
+            "gridlineColor": { "solid": { "color": "#2A2740" } },
+            "axisColor": { "solid": { "color": "#2A2740" } },
+            "titleColor": { "solid": { "color": "#B8B5D6" } }
+          }
+        ],
+        "valueAxis": [
+          {
+            "labelColor": { "solid": { "color": "#B8B5D6" } },
+            "gridlineColor": { "solid": { "color": "#2A2740" } },
+            "axisColor": { "solid": { "color": "#2A2740" } },
+            "titleColor": { "solid": { "color": "#B8B5D6" } }
+          }
+        ]
+      }
+    },
+    "card": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#141124" } },
+            "transparency": 0
+          }
+        ],
+        "labels": [
+          {
+            "fontFamily": "Segoe UI Semibold",
+            "fontSize": 30,
+            "color": { "solid": { "color": "#EAEAF0" } }
+          }
+        ],
+        "categoryLabels": [
+          {
+            "fontFamily": "Segoe UI",
+            "fontSize": 10,
+            "color": { "solid": { "color": "#B8B5D6" } }
+          }
+        ]
+      }
+    },
+    "slicer": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#141124" } },
+            "transparency": 0
+          }
+        ],
+        "header": [
+          {
+            "fontFamily": "Segoe UI Semibold",
+            "fontSize": 11,
+            "fontColor": { "solid": { "color": "#EAEAF0" } }
+          }
+        ],
+        "items": [
+          {
+            "fontFamily": "Segoe UI",
+            "fontSize": 10,
+            "fontColor": { "solid": { "color": "#EAEAF0" } }
+          }
+        ]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "grid": [
+          {
+            "gridVertical": false,
+            "gridHorizontal": true,
+            "gridColor": { "solid": { "color": "#2A2740" } }
+          }
+        ],
+        "columnHeaders": [
+          {
+            "fontFamily": "Segoe UI Semibold",
+            "fontSize": 10,
+            "color": { "solid": { "color": "#EAEAF0" } },
+            "backColor": { "solid": { "color": "#141124" } }
+          }
+        ],
+        "values": [
+          {
+            "fontFamily": "Segoe UI",
+            "fontSize": 10,
+            "color": { "solid": { "color": "#B8B5D6" } },
+            "backColor": { "solid": { "color": "#0B0A12" } }
+          }
+        ]
+      }
+    }
+  }
+}
