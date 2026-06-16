@@ -3,12 +3,12 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![LightGBM](https://img.shields.io/badge/model-LightGBM-informational)](https://lightgbm.readthedocs.io/)
 [![SHAP](https://img.shields.io/badge/explainability-SHAP-green)](https://shap.readthedocs.io/)
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/skayy47/credit-risk-prediction/main/app.py)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://credit-risk-prediction-skay.streamlit.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> A production-grade ML pipeline that predicts probability of default (PD) on 307,511 real loan applications — with SHAP explainability, business scenario simulation, and Power BI–ready outputs.
+> A production-grade ML pipeline that predicts probability of default (PD) on 307,511 real loan applications — with SHAP explainability, business scenario simulation, Basel III–aligned metrics (Gini / KS), and BI-ready outputs.
 
-**[Live Demo →](https://share.streamlit.io/skayy47/credit-risk-prediction/main/app.py)**
+**[Live Demo →](https://credit-risk-prediction-skay.streamlit.app)**
 
 ---
 
@@ -22,16 +22,17 @@ Most ML credit-risk projects are notebooks. This is a **config-driven CLI pipeli
 - Every output is a contract: stable CSVs for BI tools
 - SHAP TreeExplainer for regulatory-grade explainability
 - Business simulation: threshold sweep + named scenarios
+- Basel III–aligned dashboard: AUC, Gini coefficient, KS statistic
 - 8 pytest tests including LightGBM → LogReg fallback path
 
 ---
 
 ## Results
 
-| Model | AUC-ROC | Avg Precision | Brier Score |
-|---|---|---|---|
-| Baseline (no weighting) | 0.6280 | 0.1305 | 0.0728 |
-| **Champion (class_weight=balanced)** | **0.7594** | **0.2492** | 0.1653 |
+| Model | AUC-ROC | Gini | Avg Precision | Brier Score |
+|---|---|---|---|---|
+| Baseline (no weighting) | 0.6280 | 0.256 | 0.1305 | 0.0728 |
+| **Champion (class_weight=balanced)** | **0.7594** | **0.519** | **0.2492** | 0.1653 |
 
 Dataset: [Home Credit Default Risk](https://www.kaggle.com/c/home-credit-default-risk) — 307,511 rows, 122 features, 8.1% default rate.
 
@@ -65,7 +66,7 @@ credit-risk/
 │   ├── reports/               ← Metrics, SHAP, calibration, confusion matrix
 │   └── predictions/           ← Decision simulation, scenarios, segments
 ├── tests/                     ← 8 pytest tests
-├── app.py                     ← Streamlit dashboard
+├── app.py                     ← Streamlit dashboard (v2)
 └── Makefile
 ```
 
@@ -105,10 +106,13 @@ scenarios:
     ...
 ```
 
-### 4. LightGBM → LogReg fallback chain
+### 4. Basel III–aligned metrics
+The dashboard computes **Gini coefficient** (2 × AUC − 1) and **KS statistic** (max |CDF_default − CDF_good|) — the two discriminatory power metrics required by Basel III credit risk models, alongside standard AUC-ROC and Average Precision.
+
+### 5. LightGBM → LogReg fallback chain
 `build_model_pipeline()` gracefully degrades if LightGBM is unavailable — silently swapping in `LogisticRegression` and dropping incompatible params with a warning. This is tested in CI.
 
-### 5. Stratified split + class_weight handling
+### 6. Stratified split + class_weight handling
 The champion model uses `class_weight='balanced'` to address the 91.9% / 8.1% class imbalance, and the train/test split is stratified to preserve the imbalance ratio.
 
 ---
@@ -155,17 +159,19 @@ make test   # pytest
 
 ---
 
-## Dashboard
+## Dashboard (v2)
 
 The Streamlit app reads pre-generated CSVs from `data/outputs/` — no retraining on deploy.
 
 | Tab | Content |
 |---|---|
-| 📊 Model Intelligence | AUC comparison, confusion matrix, calibration curve |
-| 🔍 Feature Insights | SHAP top-N bar chart, missingness overview |
-| 💼 Business Simulator | Interactive threshold slider with profit/loss/approval chart |
-| 📋 Scenario Analysis | Side-by-side scenario cards + net value chart |
-| 🧩 Population Segments | Default rate by age, income, gender, credit amount |
+| 📊 Model Intelligence | AUC comparison, ROC curve, confusion matrix (Precision/Recall/F1), risk score distribution, calibration curve |
+| 🔍 Feature Insights | SHAP top-N bar (color-coded by feature group), feature-group donut, correlation-with-target chart, missingness overview |
+| 💼 Business Simulator | Threshold slider (pre-set to optimal), approval/default/net chart, annual portfolio projection |
+| 📋 Scenario Analysis | Scenario cards (Base/Conservative/Aggressive), profit/loss chart, risk vs return scatter |
+| 🧩 Population Segments | All-segment overview grid, detailed analysis by income/age/credit band/gender |
+
+**KPI row** — 6 live metrics: Dataset · Features · Default Rate · Champion AUC · **Gini Coefficient** · **KS Statistic**
 
 ---
 
@@ -187,7 +193,8 @@ data/outputs/
     ├── decision_simulation.csv       → 19 thresholds × (approval_rate, default_rate, net_value)
     ├── scenario_results.csv          → 3 scenarios × business metrics
     ├── population_segments.csv       → segment_name, segment_value, n, default_rate
-    └── feature_summary.csv           → per-feature stats + group tag
+    ├── feature_summary.csv           → per-feature stats + group tag
+    └── correlation_top.csv           → feature × pearson correlation with TARGET
 ```
 
 ---
