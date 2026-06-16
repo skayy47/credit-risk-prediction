@@ -337,10 +337,11 @@ with tab1:
 
     if metrics_champ is not None:
         avg_prec = metrics_champ["average_precision"].iloc[0]
+        ks_part = f" and KS <b>{ks_stat:.3f}</b>" if ks_stat is not None else ""
         _insight(
             f"<b>Key finding:</b> Champion model — AUC <b>{champ_auc:.3f}</b>, "
             f"Average Precision <b>{avg_prec:.3f}</b> on a {default_rate:.1%} imbalanced dataset. "
-            f"Gini <b>{gini:.3f}</b> and KS <b>{ks_stat:.3f}</b> confirm strong discriminatory power "
+            f"Gini <b>{gini:.3f}</b>{ks_part} confirm strong discriminatory power "
             f"suitable for regulatory credit scoring (Basel III framework)."
         )
 
