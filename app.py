@@ -366,7 +366,7 @@ with tab1:
             fig.add_hline(y=0.5, line_dash="dot", line_color="#CBD5E1",
                          annotation_text="Random (0.50)", annotation_position="right",
                          annotation_font_size=10)
-            _chart(fig, 300).update_yaxis(range=[0.40, max(aucs) + 0.07], title="AUC-ROC")
+            _chart(fig, 300).update_yaxes(range=[0.40, max(aucs) + 0.07], title="AUC-ROC")
             st.plotly_chart(fig, use_container_width=True)
 
     with col_r:
