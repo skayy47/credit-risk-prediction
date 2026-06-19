@@ -13,7 +13,7 @@ Target: AUC **≥ 0.78** with relational features · calibrated PD · Optuna-tun
 | # | Task | File(s) | Status |
 |---|------|---------|--------|
 | 0.1 | Soften "regulatory-grade" → "audit-ready, per-prediction" | `README.md:23` | ✅ |
-| 0.2 | Untrack model artifacts + stray theme files; add to `.gitignore` | `.gitignore`, git index | 🔄 |
+| 0.2 | Untrack model artifacts + stray theme files; add to `.gitignore` | `.gitignore`, git index | ✅ |
 | 0.3 | Reframe "Basel III scorecard" → "credit scorecard (Gini/KS discrimination)" | **portfolio** `content.ts`, LinkedIn About | ⬜ (separate repo) |
 | 0.4 | Resolve the dead demo URL — pick one slug, make README badge + repo homepage match | `README.md`, GitHub homepage | ⬜ (needs SKAY click-test) |
 
@@ -21,9 +21,17 @@ Target: AUC **≥ 0.78** with relational features · calibrated PD · Optuna-tun
 
 ---
 
-## Phase 1 — Relational feature engineering (THE AUC lever) — ⛔ needs Kaggle data
+## Phase 1 — Relational feature engineering (THE AUC lever) — 🔄 CODE DONE · retrain ⛔ needs data
 
 Add features from the auxiliary Home Credit tables. This is the single highest-impact change and the thing interviewers ask about.
+
+**Shipped (code + tests, no data required to validate):**
+- ✅ `src/credit_risk/features/relational.py` — bureau (+bureau_balance), previous_application, installments, POS, credit-card aggregators + `build_relational_features()`.
+- ✅ `configs/feature_sources.yaml` — declarative table paths + per-source toggles (missing files skipped, not fatal).
+- ✅ `build-features` CLI subcommand → writes `data/raw/application_train_enriched.csv`.
+- ✅ `tests/test_relational.py` — 8 synthetic-data unit tests, all passing (logic validated without Kaggle).
+
+**To run once data lands in `data/raw/`:** `python -m credit_risk.cli build-features` → point `configs/paths.yaml:raw_data` at the enriched CSV → re-run `train-simulate`.
 
 New module: `src/credit_risk/features/relational.py`
 
