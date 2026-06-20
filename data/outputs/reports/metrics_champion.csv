@@ -1,2 +1,2 @@
 auc_roc,average_precision,brier_score,log_loss
-0.759402,0.249165,0.16532,0.499238
+0.774842,0.26994,0.155108,0.47439

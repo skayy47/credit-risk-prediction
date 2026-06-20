@@ -5,6 +5,7 @@ import sys
 
 from credit_risk.data.ingest import run_ingest_validate
 from credit_risk.features.dashboard_tables import run_make_dashboard_tables
+from credit_risk.features.relational import run_build_features
 from credit_risk.modeling.train import run_train_simulate
 from credit_risk.modeling.scenarios import run_simulate_scenarios
 
@@ -25,6 +26,17 @@ def _cmd_ingest_validate(args: argparse.Namespace) -> int:
         return 0
     except (FileNotFoundError, ValueError) as e:
         logging.getLogger("credit_risk").error("Validation failed: %s", e)
+        return 1
+
+
+def _cmd_build_features(args: argparse.Namespace) -> int:
+    _configure_logging(getattr(args, "verbose", False))
+    try:
+        out = run_build_features()
+        logging.getLogger("credit_risk").info("Enriched table written: %s", out)
+        return 0
+    except (FileNotFoundError, ValueError) as e:
+        logging.getLogger("credit_risk").error("Feature build failed: %s", e)
         return 1
 
 
@@ -65,6 +77,9 @@ def main() -> int:
 
     ingest_validate_parser = subparsers.add_parser("ingest-validate")
     ingest_validate_parser.set_defaults(func=_cmd_ingest_validate)
+
+    build_features_parser = subparsers.add_parser("build-features")
+    build_features_parser.set_defaults(func=_cmd_build_features)
 
     make_dashboard_parser = subparsers.add_parser("make-dashboard-tables")
     make_dashboard_parser.set_defaults(func=_cmd_make_dashboard_tables)

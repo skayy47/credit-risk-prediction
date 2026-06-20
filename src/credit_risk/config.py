@@ -53,6 +53,23 @@ def get_models_dir() -> Path:
     return _PROJECT_ROOT / models
 
 
+def project_root() -> Path:
+    """Absolute project root (parent of src/)."""
+    return _PROJECT_ROOT
+
+
+def get_feature_sources() -> dict:
+    """Load configs/feature_sources.yaml (Phase 1 relational feature engineering)."""
+    path = _PROJECT_ROOT / "configs" / "feature_sources.yaml"
+    if not path.exists():
+        raise FileNotFoundError(f"Feature sources config not found: {path}")
+    with open(path, encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+    if not data:
+        raise ValueError("configs/feature_sources.yaml is empty")
+    return data
+
+
 def load_model_config() -> dict:
     """Load model config from configs/model.yaml."""
     path = _PROJECT_ROOT / "configs" / "model.yaml"

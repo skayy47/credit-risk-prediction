@@ -1,0 +1,30 @@
+# Phase 1 — relational feature engineering (auxiliary Home Credit tables).
+# All paths relative to project root; place the CSVs in data/raw/.
+# Each source can be toggled; a missing file is skipped with a warning so the
+# build still runs on whatever subset is available.
+id_column: SK_ID_CURR
+base_table: data/raw/application_train.csv
+
+sources:
+  bureau:
+    path: data/raw/bureau.csv
+    enabled: true
+  bureau_balance:
+    path: data/raw/bureau_balance.csv   # joined into bureau via SK_ID_BUREAU
+    enabled: true
+  previous_application:
+    path: data/raw/previous_application.csv
+    enabled: true
+  installments_payments:
+    path: data/raw/installments_payments.csv
+    enabled: true
+  pos_cash_balance:
+    path: data/raw/POS_CASH_balance.csv
+    enabled: true
+  credit_card_balance:
+    path: data/raw/credit_card_balance.csv
+    enabled: true
+
+# Enriched application table written here. After building, point
+# configs/paths.yaml -> raw_data at this file and re-run train-simulate.
+output: data/raw/application_train_enriched.csv

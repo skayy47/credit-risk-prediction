@@ -20,7 +20,7 @@ Most ML credit-risk projects are notebooks. This is a **config-driven CLI pipeli
 - YAML-configured — zero hardcoded paths
 - CLI entry point (`python -m credit_risk.cli <command>`)
 - Every output is a contract: stable CSVs for BI tools
-- SHAP TreeExplainer for regulatory-grade explainability
+- SHAP TreeExplainer for audit-ready, per-prediction explainability
 - Business simulation: threshold sweep + named scenarios
 - Basel III–aligned dashboard: AUC, Gini coefficient, KS statistic
 - 8 pytest tests including LightGBM → LogReg fallback path
