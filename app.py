@@ -296,7 +296,7 @@ c1, c2, c3, c4, c5, c6 = st.columns(6)
 with c1:
     _kpi("Dataset", "307,511", "loan applications", C_BLUE, "🗄️")
 with c2:
-    _kpi("Features", "120", "engineered features", C_INDIGO, "⚙️")
+    _kpi("Features", "153", "incl. 31 relational", C_INDIGO, "⚙️")
 with c3:
     _kpi("Default Rate", f"{default_rate:.1%}", "class imbalance", C_RED, "⚠️")
 with c4:

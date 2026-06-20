@@ -23,7 +23,7 @@ Most ML credit-risk projects are notebooks. This is a **config-driven CLI pipeli
 - SHAP TreeExplainer for audit-ready, per-prediction explainability
 - Business simulation: threshold sweep + named scenarios
 - Basel III–aligned dashboard: AUC, Gini coefficient, KS statistic
-- 8 pytest tests including LightGBM → LogReg fallback path
+- 16 pytest tests including LightGBM → LogReg fallback + relational-feature aggregations
 
 ---
 
@@ -32,11 +32,14 @@ Most ML credit-risk projects are notebooks. This is a **config-driven CLI pipeli
 | Model | AUC-ROC | Gini | Avg Precision | Brier Score |
 |---|---|---|---|---|
 | Baseline (no weighting) | 0.6280 | 0.256 | 0.1305 | 0.0728 |
-| **Champion (class_weight=balanced)** | **0.7594** | **0.519** | **0.2492** | 0.1653 |
+| Champion v1 (application table only) | 0.7594 | 0.519 | 0.2492 | 0.1653 |
+| **Champion v2 (+ 31 relational features)** | **0.7748** | **0.550** | **0.2699** | **0.1551** |
 
-Dataset: [Home Credit Default Risk](https://www.kaggle.com/c/home-credit-default-risk) — 307,511 rows, 122 features, 8.1% default rate.
+Dataset: [Home Credit Default Risk](https://www.kaggle.com/c/home-credit-default-risk) — 307,511 rows, 153 features (122 base + 31 engineered from the bureau / previous-application / installments / POS / credit-card tables), 8.1% default rate.
 
-> **Note on Brier score:** The champion model's higher Brier score (0.165 vs 0.073) is expected — `class_weight='balanced'` shifts the model's probability outputs toward the minority class, which is the intended behavior for recall-focused lending decisions. AUC-ROC and Average Precision are the metrics that matter here.
+> **The v1 → v2 AUC lift (+0.015)** comes entirely from relational feature engineering across the auxiliary Home Credit tables. Three engineered features — `PREV_CREDIT_TO_APP_RATIO`, `INST_LATE_RATE`, `POS_N_MONTHS` — rank in the model's top-12 SHAP values, confirming the signal is genuinely predictive.
+
+> **Note on Brier score:** The champion's higher Brier (0.155 vs 0.073 baseline) is expected — `class_weight='balanced'` shifts probability outputs toward the minority class, the intended behavior for recall-focused lending. AUC-ROC and Average Precision are the metrics that matter here.
 
 ---
 

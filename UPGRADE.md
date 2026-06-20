@@ -21,7 +21,9 @@ Target: AUC **≥ 0.78** with relational features · calibrated PD · Optuna-tun
 
 ---
 
-## Phase 1 — Relational feature engineering (THE AUC lever) — 🔄 CODE DONE · retrain ⛔ needs data
+## Phase 1 — Relational feature engineering (THE AUC lever) — ✅ DONE
+
+**Result: retrained on enriched table — AUC 0.7594 → 0.7748, Gini 0.519 → 0.550, AvgPrec 0.249 → 0.270.** Three engineered features land in the top-12 SHAP. Merged into `main` (canonical + deployed branch).
 
 Add features from the auxiliary Home Credit tables. This is the single highest-impact change and the thing interviewers ask about.
 
