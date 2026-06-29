@@ -221,6 +221,8 @@ metrics_cmp   = _csv(str(REPORTS / "metrics_compare.csv"))
 shap_df       = _csv(str(REPORTS / "feature_importance_shap.csv"))
 conf_mat      = _csv(str(REPORTS / "confusion_matrix.csv"))
 calib_df      = _csv(str(REPORTS / "calibration_bins.csv"))
+calib_curve   = _csv(str(REPORTS / "calibration_curve.csv"))
+calib_metrics = _csv(str(REPORTS / "calibration_metrics.csv"))
 decision_sim  = _csv(str(PREDS  / "decision_simulation.csv"))
 scenarios     = _csv(str(PREDS  / "scenario_results.csv"))
 segments      = _csv(str(PREDS  / "population_segments.csv"))
@@ -486,6 +488,17 @@ with tab1:
             calib_df["predicted_midpoint"].max(),
             calib_df["actual_default_rate"].max(),
         ) + 0.02
+        if calib_curve is not None and "method" in calib_curve.columns:
+            cal_only = calib_curve[calib_curve["method"] == "calibrated"]
+            if not cal_only.empty:
+                fig.add_trace(go.Scatter(
+                    x=cal_only["mean_predicted"],
+                    y=cal_only["fraction_positive"],
+                    mode="lines+markers",
+                    name="Isotonic-calibrated",
+                    line=dict(color=C_GREEN, width=2.5),
+                    marker=dict(size=7, color=C_GREEN),
+                ))
         fig.add_trace(go.Scatter(
             x=[0, max_val], y=[0, max_val],
             mode="lines", name="Perfect calibration",
@@ -497,12 +510,17 @@ with tab1:
             legend=dict(x=0.02, y=0.95),
         )
         st.plotly_chart(fig, use_container_width=True)
-        _insight(
-            "<b>Calibration note:</b> The Champion model uses <code>class_weight='balanced'</code> "
-            "which intentionally shifts probability outputs toward the minority class — "
-            "by design, for recall-focused lending decisions. "
-            "AUC-ROC and Average Precision are the primary performance metrics here."
+        note = (
+            "<b>Calibration note:</b> The Champion uses <code>class_weight='balanced'</code>, "
+            "which shifts raw probabilities toward the minority class (by design, for recall). "
+            "An <b>isotonic calibrator</b> is fit on a held-out slice to recover trustworthy "
+            "default probabilities for the business simulation — discrimination (AUC) is unchanged."
         )
+        if calib_metrics is not None and "calibrated_brier" in calib_metrics.columns:
+            rb = float(calib_metrics["raw_brier"].iloc[0])
+            cb = float(calib_metrics["calibrated_brier"].iloc[0])
+            note += f" Brier {rb:.3f} → <b>{cb:.3f}</b> after calibration."
+        _insight(note)
 
 
 # ══════════════════════════════════════════════════════════════════════════════

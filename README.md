@@ -22,8 +22,9 @@ Most ML credit-risk projects are notebooks. This is a **config-driven CLI pipeli
 - Every output is a contract: stable CSVs for BI tools
 - SHAP TreeExplainer for audit-ready, per-prediction explainability
 - Business simulation: threshold sweep + named scenarios
+- Optuna hyperparameter search + isotonic probability calibration
 - Basel III–aligned dashboard: AUC, Gini coefficient, KS statistic
-- 16 pytest tests including LightGBM → LogReg fallback + relational-feature aggregations
+- 19 pytest tests including LightGBM → LogReg fallback, relational aggregations, calibration
 
 ---
 
@@ -39,7 +40,18 @@ Dataset: [Home Credit Default Risk](https://www.kaggle.com/c/home-credit-default
 
 > **The v1 → v2 AUC lift (+0.015)** comes entirely from relational feature engineering across the auxiliary Home Credit tables. Three engineered features — `PREV_CREDIT_TO_APP_RATIO`, `INST_LATE_RATE`, `POS_N_MONTHS` — rank in the model's top-12 SHAP values, confirming the signal is genuinely predictive.
 
-> **Note on Brier score:** The champion's higher Brier (0.155 vs 0.073 baseline) is expected — `class_weight='balanced'` shifts probability outputs toward the minority class, the intended behavior for recall-focused lending. AUC-ROC and Average Precision are the metrics that matter here.
+> **Note on Brier score:** The champion's higher *raw* Brier (0.155 vs 0.073 baseline) is expected — `class_weight='balanced'` shifts probability outputs toward the minority class, the intended behavior for recall-focused lending. This is then corrected by calibration (below).
+
+---
+
+## Modeling decisions
+
+Reasoning shown, because in credit risk the *why* matters as much as the score.
+
+- **Relational features over a deeper single-table model.** The +0.015 AUC came from joining the auxiliary tables (bureau, previous applications, installments, POS, credit-card), not from squeezing the application table. That's where Home Credit's signal lives — and three engineered features land in the top-12 SHAP.
+- **`class_weight='balanced'` over SMOTE.** With an 8.1% default rate, balancing the loss is cheaper and leakage-free compared to synthetic oversampling, and it keeps the pipeline deterministic.
+- **Hyperparameter tuning — validated, not assumed.** An Optuna study (stratified CV AUC, `tune` command, results in `data/outputs/reports/tuning_results.csv`) was run. Its best configuration **did not beat the hand-tuned baseline on the held-out test set (0.7732 vs 0.7748)**, so the baseline was kept. Tuning output is evaluated against held-out test before adoption — it is not magic.
+- **Isotonic calibration for trustworthy PD.** Because `class_weight='balanced'` distorts probabilities, an isotonic calibrator is fit on a held-out slice (prefit, no leakage). This cuts test **Brier 0.147 → 0.067** and log-loss 0.453 → 0.242 while leaving AUC unchanged (calibration is monotonic). The business simulation prices loans off these *calibrated* probabilities — otherwise the expected profit/loss is meaningless. Run via the `calibrate` command.
 
 ---
 

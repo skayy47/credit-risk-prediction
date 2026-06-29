@@ -8,6 +8,8 @@ from credit_risk.features.dashboard_tables import run_make_dashboard_tables
 from credit_risk.features.relational import run_build_features
 from credit_risk.modeling.train import run_train_simulate
 from credit_risk.modeling.scenarios import run_simulate_scenarios
+from credit_risk.modeling.tune import run_tune
+from credit_risk.modeling.calibrate import run_calibrate
 
 
 def _configure_logging(verbose: bool) -> None:
@@ -60,6 +62,26 @@ def _cmd_train_simulate(args: argparse.Namespace) -> int:
         return 1
 
 
+def _cmd_tune(args: argparse.Namespace) -> int:
+    _configure_logging(getattr(args, "verbose", False))
+    try:
+        run_tune()
+        return 0
+    except (FileNotFoundError, ValueError) as e:
+        logging.getLogger("credit_risk").error("tune failed: %s", e)
+        return 1
+
+
+def _cmd_calibrate(args: argparse.Namespace) -> int:
+    _configure_logging(getattr(args, "verbose", False))
+    try:
+        run_calibrate()
+        return 0
+    except (FileNotFoundError, ValueError) as e:
+        logging.getLogger("credit_risk").error("calibrate failed: %s", e)
+        return 1
+
+
 def _cmd_simulate_scenarios(args: argparse.Namespace) -> int:
     _configure_logging(getattr(args, "verbose", False))
     try:
@@ -86,6 +108,12 @@ def main() -> int:
 
     train_simulate_parser = subparsers.add_parser("train-simulate")
     train_simulate_parser.set_defaults(func=_cmd_train_simulate)
+
+    tune_parser = subparsers.add_parser("tune")
+    tune_parser.set_defaults(func=_cmd_tune)
+
+    calibrate_parser = subparsers.add_parser("calibrate")
+    calibrate_parser.set_defaults(func=_cmd_calibrate)
 
     simulate_scenarios_parser = subparsers.add_parser("simulate-scenarios")
     simulate_scenarios_parser.set_defaults(func=_cmd_simulate_scenarios)

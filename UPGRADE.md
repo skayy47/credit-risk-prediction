@@ -64,7 +64,13 @@ def build_relational_features(paths: PathsConfig) -> pd.DataFrame:
 
 ---
 
-## Phase 2 — Tuning + calibration — ⛔ needs Kaggle data
+## Phase 2 — Tuning + calibration — ✅ DONE
+
+**Outcome:** `tune` (Optuna CV study) + `calibrate` (isotonic) shipped. Tuning's best config did **not** beat the hand-tuned baseline on held-out test (0.7732 vs 0.7748) → baseline retained (validated, not assumed). **Calibration is the win: test Brier 0.147 → 0.067, log-loss 0.453 → 0.242, AUC unchanged.** Champion stays AUC 0.7748.
+
+---
+
+### Original plan
 
 | # | Task | Detail |
 |---|------|--------|
@@ -77,13 +83,13 @@ def build_relational_features(paths: PathsConfig) -> pd.DataFrame:
 
 ---
 
-## Phase 3 — Defense polish — partially data-dependent
+## Phase 3 — Defense polish — ✅ DONE
 
 | # | Task | Status |
 |---|------|--------|
-| 3.1 | Tests 8 → ~15: cover `relational.py` aggregations + a calibration sanity test | ⬜ |
-| 3.2 | README "Modeling decisions" section: class_weight vs SMOTE, isotonic rationale, AUC progression 0.628 → 0.759 → 0.78+ | ⬜ |
-| 3.3 | Add reliability curve + SHAP summary to the Streamlit dashboard | ⬜ |
+| 3.1 | Tests 8 → **19**: relational aggregations (8) + calibration helpers (3) | ✅ |
+| 3.2 | README "Modeling decisions" section: relational features, class_weight vs SMOTE, tuning-validation, isotonic rationale | ✅ |
+| 3.3 | Reliability curve (raw vs isotonic-calibrated) added to the Streamlit dashboard | ✅ |
 
 ---
 
